@@ -3,7 +3,7 @@ import sounddevice as sd                                                        
 import numpy                                                                    # https://numpy.org/
 import argparse                                                                 # https://docs.python.org/3/library/argparse.html
 import socket
-#Clases usadas para la inicialización de la prorityQueue y la excepción Emtpy   # https://docs.python.org/3/library/socket.html
+#Clases usadas para la inicialización de la prorityQueue y la excepción Emtpy, struct   # https://docs.python.org/3/library/socket.html
 from queue import PriorityQueue                                                 
 from queue import Empty                                                         # https://docs.python.org/3/library/queue.html
 import struct
@@ -46,6 +46,10 @@ class Intercom_buffer(Intercom):
             El resultado es una tupla incluso si contiene exactamente un elemento. La cadena debe contener 
             exactamente la cantidad de datos requeridos por el formato ( debe ser igual ).pack(fmt, ...)
             len(string)calcsize(fmt)"""
+            #! --> red (= big-endian); 
+            #H --> enteros de 16 bits 2^16= 65536 rango maximo.
+            #h --> enteros de 16 bits 2^! = 2 rango minimo. 
+            #H{}h los paquetes van a respetar el rango entre el máximo y el minimo. 
              index,*msg=struct.unpack("!H{}h".format(self.samples_per_chunk*self.number_of_channels),message)
              self.priorityQ.put((index, msg))
 
